@@ -173,8 +173,11 @@ select option in "${options[@]}"; do
             ;;
         "Run Nextgen using remote singularity image")
             echo "pulling container and running the model"
-            singularity pull -F --arch $ARCH $IMAGE_NAME $IMAGE_URL
-            break
+            TMPDIR="/tmp/ngiab_singularity_$$"
+	    mkdir -p $TMPDIR
+	    SINGULARITY_TMPDIR="$TMPDIR" singularity pull -F --disable-cache --arch $ARCH $IMAGE_NAME $IMAGE_URL
+	    rm -rf $TMPDIR
+	    break
             ;;
         Exit)
             echo "Have a nice day!"
